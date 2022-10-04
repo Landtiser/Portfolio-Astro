@@ -1,0 +1,11 @@
+---
+import { renderRichText } from '@storyblok/astro'
+
+const { blok } = Astro.props
+---
+
+
+<div style={{ background: '#fff', maxWidth: '1180px', margin: '0 auto' }}>
+    <h1 style="padding-left: 20px">{blok.title}</h1>
+    <article set:html={renderRichText(blok.body)}></article>
+</div>

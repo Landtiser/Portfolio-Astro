@@ -1,0 +1,100 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../config';
+
+import portrait from '../images/chris1.jpg';
+import plan from '../images/plan.svg';
+import design from '../images/design.svg';
+import develop from '../images/develop.svg';
+import skillshare from '../images/skillshare-logo.svg';
+import skillshareIcon from '../images/skillshare-icon.png';
+import fec from '../images/fec.jpg';
+import awwwards from '../images/awwwardsLogo.jpg';
+import wdd from '../images/wddLogo.jpg';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header title={SITE_TITLE} />
+		<div style={{ background: '#fff', maxWidth: 1180, margin: '0 auto' }}>
+          
+			<section>
+			  <div class="card card--horizontal">
+			  <img class="card__img--horizontal" src={portrait} alt="Chris Landtiser" />
+  
+				<article class="no-padding">
+				  <h1>Chris Landtiser <span class="titles">Designer &amp; Developer</span></h1>
+				  <p>A website or application is a complex tool that requires great attention to detail. From planning through implementation and beyond, I use my wide range of creative and technical skills to ensure you get the best possible result with minimal stress.</p>
+  
+				</article>
+			  </div>
+			  <div class="card">
+				<div class="card__header plan">
+				  <img src={plan} alt="Planning Icon" />
+				</div>
+				<article>
+				  <h1>Plan</h1>
+				  <p>The cornerstone of success is <i>making things happen</i>. I start every project by learning your goals in your own words, then selecting the best practices and technology to fully meet those needs. This minimizes unexpected holdups, nasty surprises,
+					and many other common pitfalls for time and money.</p>
+				</article>
+			  </div>
+			  <div class="card">
+				<div class="card__header design">
+				  <img src={design} alt="Design Icon" />
+				</div>
+				<article>
+				  <h1>Design</h1>
+				  <p>A well designed project blends branding, achievable goals, and a satisfying user experience into one complete solution. Working together we can design something that you're proud to have represent you, while making it easy for your users to get
+					the most out of what you have to offer.</p>
+				</article>
+			  </div>
+			  <div class="card">
+				<div class="card__header develop">
+				  <img src={develop} alt="Develop Icon" />
+				</div>
+				<article>
+				  <h1>Develop</h1>
+				  <p>Translating goals and designs into a functional, accessible site is a challenge unique to every project. I focus on development that works for any visitor on any modern platform. Whether your user is on Internet Explorer 9 or their smart-fridge
+					touch-screen, they're important.</p>
+				</article>
+			  </div>
+			</section>
+  
+			<section>
+			  <div class="card card--fec">
+				<article>
+				  <h2>My Podcast</h2>
+				  <p><a href="https://fec.fyi/" target="_blank" rel="noopener noreferrer">Front End Center</a> is all about design, development, and how to keep working effectively. As a project it's an opportunity for me to explore additional content, as well as include new multi-media tools in my skillset. From setting up my own recording and audio processing to distributing the podcast files from an AWS server, Front End Center has been a fun adventure!</p>
+				  <a class="logo-link" href="https://fec.fyi/" target="_blank" rel="noopener noreferrer"><img src={fec} alt="Front End Center Logo" /></a>
+				</article>
+			  </div>
+			  <div class="card card--media">
+				<article>
+				  <h2>My Classes</h2>
+				  <p>I worked with the team at Skillshare to produce class material for their platform. Making the core concepts understandable is just as important as the actual code being written.</p>
+				  <a href="https://skl.sh/2VSuRA7" target="_blank" rel="noopener noreferrer" class="multi-logo">
+					<img class="class-icon" src={skillshareIcon} alt="Skillshare" />
+					<img class="class-logo" src={skillshare} alt="Skillshare" />
+				  </a>
+				</article>
+				<article>
+				  <h2>Published At</h2>
+				  <p>In addition to my own blog and podcast, I've published posts at a number of other design and development communities. Follow the linked logos below to see those articles!</p>
+				  <div class="pub-section">
+					<a class="pub-logo" href="https://www.awwwards.com/marketing-you-the-power-of-a-brand.html" target="_blank" rel="noopener noreferrer"><img class="pub-img" src={awwwards} alt="Awwwards Logo" /></a>
+					<a class="pub-logo" href="https://www.webdesignerdepot.com/author/Chris-Landtiser" target="_blank" rel="noopener noreferrer"><img class="pub-img" src={wdd} alt="Webdesigner Depot" /></a>
+				  </div>
+				</article>
+			  </div>
+			</section>
+  
+		  </div>
+		<Footer />
+	</body>
+</html>

@@ -1,0 +1,150 @@
+---
+import HeaderLink from './HeaderLink.astro';
+import { SITE_TITLE } from '../config';
+import Logo from '/favicon.svg'
+---
+
+<header>
+	<nav role="navigation">
+		<ul id="navigation" class="navigation">
+		  <li id="logoContainer" class="navigationLogo">
+			<a href="/"><img class="logoImage" src={Logo} alt="Chris Landtiser"></a>
+		  </li>
+		  <li class="navigationItem">
+			<a href="/">Home</a>
+		  </li>
+		  <li class="navigationItem">
+			<a href="/blog/">Blog</a>
+		  </li>
+		</ul>
+	  </nav>
+</header>
+<style>
+	.navigation {
+  display: flex;
+  justify-content: flex-end;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 5vh 0;
+  height: 10vh;
+  width: 100%;
+  font-size: 1.25em;
+  background-color: #00738C;
+}
+
+.navigationLogo {
+  position: relative;
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 3vh;
+  margin: 0 auto 0 0;
+  background-color: #004959;
+}
+
+.navigationLogo a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 45px;
+}
+
+.navigationLogo:global(#logoContainer::after) {
+  content: "";
+  position: absolute;
+  left: calc(100% - 1px);
+  top: 0;
+  display: block;
+  height: 100%;
+  width: 3vh;
+  background-image: url('/logo-arrow.svg');
+  background-repeat: no-repeat;
+  background-position: left;
+  background-size: cover;
+}
+
+.navigationItem {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 1em;
+}
+
+.navigationItem a {
+  position: relative;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.navigationItem :global(a::before) {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
+  visibility: hidden;
+  -webkit-transform: scaleX(0);
+  transform: scaleX(0);
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
+}
+
+.navigationItem :global(a:hover::before) {
+  visibility: visible;
+  -webkit-transform: scaleX(1);
+  transform: scaleX(1);
+}
+
+.logoImage {
+  position: relative;
+  height: 8vh;
+  width: 8vh;
+}
+
+
+
+@media (min-width: 600px) {
+
+  .navigation {
+    justify-content: flex-start;
+  }
+
+  .navigation:global(#navigation::before) {
+    content: "";
+    display: block;
+    height: 100%;
+    width: 3vh;
+    position: relative;
+    left: calc(3vh - 1px);
+    top: 0;
+    margin-left: auto;
+    background-image: url('/nav-arrow.svg');
+    background-repeat: no-repeat;
+    background-position: left;
+    background-size: cover;
+    order: 99;
+    z-index: 2;
+  }
+
+  .navigation:global(#navigation::after) {
+    content: "Pursuing Excellence\AThrough Simplicity";
+    white-space: pre-wrap;
+    text-align: center;
+    line-height: 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    background-color: #41BDD9;
+    color: #ffffff;
+    font-size: 1rem;
+    padding: 0 3vh 0 5vh;
+    order: 100;
+  }
+
+  .navigationLogo {
+    margin: 0 3vh 0 0;
+  }
+
+}
+</style>
