@@ -1,11 +1,14 @@
 ---
-import { renderRichText } from '@storyblok/astro'
+import { storyblokEditable } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
 
 const { blok } = Astro.props
 ---
 
 
-<div style={{ background: '#fff', maxWidth: '1180px', margin: '0 auto' }}>
-    <h1 style="padding-left: 20px">{blok.title}</h1>
-    <article set:html={renderRichText(blok.body)}></article>
+<div class="wrapper">
+    <h1>{blok.title}</h1>
+    <main {...storyblokEditable(blok)}>
+      {blok.body?.map(blok => { return <StoryblokComponent blok={blok} />})}
+    </main>
 </div>

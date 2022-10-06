@@ -20,7 +20,9 @@ export default defineConfig({
 				feature: 'storyblok/Feature',
 				grid: 'storyblok/Grid',
 				teaser: 'storyblok/Teaser',
-				blogpost: 'storyblok/Blogpost'
+				blogpost: 'storyblok/Blogpost',
+				iframe: 'storyblok/EmbedIframe',
+				TextContent: 'storyblok/TextContent'
 			}
 		  }),
 	],

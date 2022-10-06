@@ -2,10 +2,9 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../../config';
+import { SITE_DESCRIPTION } from '../../config';
 
 import { useStoryblokApi } from "@storyblok/astro";
-import StoryblokComponent from "@storyblok/astro/StoryblokComponent.astro";
 
 const storyblokApi = useStoryblokApi();
 const { data } = await storyblokApi.get("cdn/stories?starts_with=blog/", {
@@ -17,7 +16,7 @@ const postList = Object.values(data.stories)
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead title='Chris Landtiser | Blog' description={SITE_DESCRIPTION} />
 		<style>
 			ul {
 				list-style-type: none;
@@ -38,20 +37,45 @@ const postList = Object.values(data.stories)
 	</head>
 	<body>
 		<Header />
-		<main>
+		<main class="wrapper">
 			<section>
-				<ul>
-					{console.log("FULL LIST")}
-					{console.log(postList)}
-						{postList.map((post:any) => (
-						<li>
-							{post.content.title}
-							
-						</li>
-					))}
-				</ul>
+				{postList.map((post:any) => (
+					<div class="blog-entry">
+						<h2 class="blogLink">
+							<a href={'/blog/' + post.slug}>
+								{post.content.title}
+							</a>
+						</h2>
+						<p>{post.content.description}</p>
+					</div>
+				))}
 			</section>
+			<div class="blogNav">
+				<!-- 
+				{(this.props.pageContext.currentPage) < (this.props.pageContext.numPages) &&
+					<div class="nav-previous alignleft"><a href={"/blog/" + (this.props.pageContext.currentPage + 1)}>Older posts</a></div>
+				}
+				{(this.props.pageContext.currentPage) > 1 &&
+				<div class="nav-next alignright"><a href={this.props.pageContext.currentPage - 1 > 1 ? "/blog/" + (this.props.pageContext.currentPage - 1) : "/blog/"}>Newer posts</a></div>
+				}
+				-->
+			</div>
 		</main>
 		<Footer />
 	</body>
 </html>
+
+<style>
+	p {
+		width: 100%;
+	}
+	.blog-entry {
+		width: 100%;
+		border-top: 1px solid #49bbda;
+		padding-top: 20px;
+		margin-top: 10px;
+	}
+	.blog-entry:nth-child(1) {
+		border-top: 0;
+	}
+</style>
