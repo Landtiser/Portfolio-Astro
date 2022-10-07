@@ -6,7 +6,4 @@ const { blok } = Astro.props
 const renderedRichText = renderRichText(blok.content)
 ---
 
-{console.log("PARAGRAPH TEST")}
-{console.log(blok)}
-
 <div set:html={renderedRichText}></div>

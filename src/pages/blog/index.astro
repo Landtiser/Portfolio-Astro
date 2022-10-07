@@ -7,10 +7,32 @@ import { SITE_DESCRIPTION } from '../../config';
 import { useStoryblokApi } from "@storyblok/astro";
 
 const storyblokApi = useStoryblokApi();
-const { data } = await storyblokApi.get("cdn/stories?starts_with=blog/", {
+
+const { data } = await storyblokApi.get("cdn/stories?starts_with=blog", {
   version: "draft",
-});
+})
+  .then((response) => {
+    console.log("Post total");
+    console.log(response.headers.total);
+    const pages = Math.ceil(response.headers.total / 5);
+    console.log("MATHS");
+    console.log(pages)
+
+    let pagedStories = [];
+
+    for (let i = 0; i < pages; i++) {
+        console.log(`Loop ${i}`)
+        return storyblokApi.get(`cdn/stories?starts_with=blog&per_page=5&page=${i}`, {
+            version: "draft",
+        })
+    }
+  })
+
 const postList = Object.values(data.stories)
+
+
+console.log("AAAAAAAAAAAAAAAAAAAA");
+console.log(data)
 ---
 
 <!DOCTYPE html>

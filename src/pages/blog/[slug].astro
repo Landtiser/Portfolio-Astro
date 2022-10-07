@@ -30,7 +30,7 @@ const storyblokApi = useStoryblokApi();
 
 const { data } = await storyblokApi.get(`cdn/stories/blog/${slug}`, {
   version: "draft",
-});
+})
 
 const story = data.story;
 ---

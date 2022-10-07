@@ -21,7 +21,7 @@ export default defineConfig({
 				grid: 'storyblok/Grid',
 				teaser: 'storyblok/Teaser',
 				blogpost: 'storyblok/Blogpost',
-				iframe: 'storyblok/EmbedIframe',
+				embed: 'storyblok/Embed',
 				TextContent: 'storyblok/TextContent'
 			}
 		  }),
