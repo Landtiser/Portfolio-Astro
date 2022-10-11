@@ -1,103 +1,130 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import { SITE_DESCRIPTION } from '../../config';
+import BaseHead from "../../components/BaseHead.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { SITE_DESCRIPTION } from "../../config";
 
 import { useStoryblokApi } from "@storyblok/astro";
 
 const storyblokApi = useStoryblokApi();
 
-const { data } = await storyblokApi.get("cdn/stories?starts_with=blog", {
-  version: "draft",
-})
-  .then((response) => {
-    console.log("Post total");
-    console.log(response.headers.total);
-    const pages = Math.ceil(response.headers.total / 5);
-    console.log("MATHS");
-    console.log(pages)
+const postTotal:any = await storyblokApi.get("cdn/stories?starts_with=blog", {
+        version: "draft",
+    });
 
-    let pagedStories = [];
+const pageCount = Math.ceil(postTotal.headers.total / 5);
+let currentPage = 1;
 
-    for (let i = 0; i < pages; i++) {
-        console.log(`Loop ${i}`)
-        return storyblokApi.get(`cdn/stories?starts_with=blog&per_page=5&page=${i}`, {
+const promises = [];
+const dataOutputs = [];
+
+for (let page = 0; page <= pageCount; page++) {
+    promises.push(
+        storyblokApi.get(`cdn/stories?starts_with=blog&per_page=5&page=${page}`, {
             version: "draft",
         })
-    }
-  })
+    )
+    dataOutputs.push(`data${page}`)
+}
 
-const postList = Object.values(data.stories)
-
-
-console.log("AAAAAAAAAAAAAAAAAAAA");
-console.log(data)
+const data  = await Promise.all(promises).then((results) => {
+    const pagedArrays = results.map((array) => {
+        return array.data.stories;
+    });
+    const pagedStories = pagedArrays.map((page) => {
+        return Object.assign({}, page);
+    })
+    return pagedArrays;
+});
 ---
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<BaseHead title='Chris Landtiser | Blog' description={SITE_DESCRIPTION} />
-		<style>
-			ul {
-				list-style-type: none;
-				padding: unset;
-			}
-			ul li {
-				display: flex;
-			}
-			ul li time {
-				flex: 0 0 130px;
-				font-style: italic;
-				color: #595959;
-			}
-			ul li a:visited {
-				color: #8e32dc;
-			}
-		</style>
-	</head>
-	<body>
-		<Header />
-		<main class="wrapper">
-			<section>
-				{postList.map((post:any) => (
-					<div class="blog-entry">
-						<h2 class="blogLink">
-							<a href={'/blog/' + post.slug}>
-								{post.content.title}
-							</a>
-						</h2>
-						<p>{post.content.description}</p>
-					</div>
-				))}
-			</section>
-			<div class="blogNav">
-				<!-- 
-				{(this.props.pageContext.currentPage) < (this.props.pageContext.numPages) &&
-					<div class="nav-previous alignleft"><a href={"/blog/" + (this.props.pageContext.currentPage + 1)}>Older posts</a></div>
-				}
-				{(this.props.pageContext.currentPage) > 1 &&
-				<div class="nav-next alignright"><a href={this.props.pageContext.currentPage - 1 > 1 ? "/blog/" + (this.props.pageContext.currentPage - 1) : "/blog/"}>Newer posts</a></div>
-				}
-				-->
-			</div>
-		</main>
-		<Footer />
-	</body>
-</html>
+    <head>
+        <BaseHead
+            title="Chris Landtiser | Blog"
+            description={SITE_DESCRIPTION}
+        />
+        <style>
+            ul {
+                list-style-type: none;
+                padding: unset;
+            }
+            ul li {
+                display: flex;
+            }
+            ul li time {
+                flex: 0 0 130px;
+                font-style: italic;
+                color: #595959;
+            }
+            ul li a:visited {
+                color: #8e32dc;
+            }
+        </style>
+    </head>
+    <body>
+        <Header />
+        <main class="wrapper">
+            <section>
+                    {data.map((page, index) => (
+                        
+                        <div class="post-page" id={"page"+index}>
 
-<style>
-	p {
-		width: 100%;
-	}
-	.blog-entry {
-		width: 100%;
-		border-top: 1px solid #49bbda;
-		padding-top: 20px;
-		margin-top: 10px;
-	}
-	.blog-entry:nth-child(1) {
-		border-top: 0;
-	}
-</style>
+                            {page.map((post) => (
+                                <div class="blog-entry">
+                                    <h2 class="blogLink">
+                                        <a href={'/blog/' + post.slug}>
+                                            {post.content.title}
+                                        </a>
+                                    </h2>
+                                    <p>{post.content.description}</p>
+                                </div>
+                            ))}
+
+                        </div>
+
+                    ))}
+                    
+            </section>
+            <div class="blogNav">
+                
+				{(currentPage) < (pageCount) &&
+					<div class="nav-previous alignleft"><a href={"/blog/" + (currentPage + 1)}>Older posts</a></div>
+				}
+				{(currentPage) > 1 &&
+				<div class="nav-next alignright"><a href={currentPage - 1 > 1 ? "/blog/" + (currentPage - 1) : "/blog/"}>Newer posts</a></div>
+				}
+				
+            </div>
+        </main>
+        <Footer />
+        <style>
+            p {
+                width: 100%;
+            }
+            .blog-entry {
+                width: 100%;
+                border-top: 1px solid #49bbda;
+                padding-top: 20px;
+                margin-top: 10px;
+            }
+            .blog-entry:nth-child(1) {
+                border-top: 0;
+            }
+            .post-page {
+                display: block;
+            }
+
+            .post-page.hidden {
+                display: none;
+            }
+        </style>
+        <script>
+            var divs = document.querySelectorAll('.post-page');
+            for (var i = 1; i < divs.length; i++) {
+                divs[i].classList.add('hidden');
+            }
+        </script>
+    </body>
+</html>
