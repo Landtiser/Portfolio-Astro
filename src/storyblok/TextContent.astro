@@ -1,9 +1,12 @@
 ---
 import { renderRichText } from '@storyblok/astro'
+import { storyblokEditable } from '@storyblok/astro'
 
 const { blok } = Astro.props
 
 const renderedRichText = renderRichText(blok.content)
 ---
 
-<div set:html={renderedRichText}></div>
+<Fragment {...storyblokEditable(blok)}>
+    <div set:html={renderedRichText}></div>
+</Fragment>
