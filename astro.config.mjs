@@ -6,7 +6,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://landtiser.com',
+	site: 'https://test-landtiser.netlify.app/',
 	integrations: [
 		mdx(),
 		sitemap(),
@@ -20,13 +20,9 @@ export default defineConfig({
 				feature: 'storyblok/Feature',
 				grid: 'storyblok/Grid',
 				teaser: 'storyblok/Teaser',
-				blogpost: 'storyblok/Blogpost',
+				blogpost: 'storyblok/BlogPost',
 				embed: 'storyblok/Embed',
-				TextContent: 'storyblok/TextContent',
-				BaseHead: 'components/BaseHead',
-				Footer: 'components/Footer',
-				Header: 'components/Header',
-				HeaderLink: 'components/HeaderLink'
+				TextContent: 'storyblok/TextContent'
 			}
 		  }),
 	],
