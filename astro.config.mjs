@@ -22,7 +22,11 @@ export default defineConfig({
 				teaser: 'storyblok/Teaser',
 				blogpost: 'storyblok/Blogpost',
 				embed: 'storyblok/Embed',
-				TextContent: 'storyblok/TextContent'
+				TextContent: 'storyblok/TextContent',
+				BaseHead: 'components/BaseHead',
+				Footer: 'components/Footer',
+				Header: 'components/Header',
+				HeaderLink: 'components/HeaderLink'
 			}
 		  }),
 	],
