@@ -6,34 +6,42 @@ import { SITE_DESCRIPTION } from "../../config";
 
 import { useStoryblokApi } from "@storyblok/astro";
 
+// Initial query to get total number of posts in the /blog folder
+
 const storyblokApi = useStoryblokApi();
 
-const postTotal:any = await storyblokApi.get("cdn/stories?starts_with=blog", {
-        version: "draft",
-    });
+const postTotal: any = await storyblokApi.get("cdn/stories?starts_with=blog", {
+    version: "draft",
+});
+
+// Set up necessary variables for looping queries
 
 const pageCount = Math.ceil(postTotal.headers.total / 5);
 let currentPage = 1;
 
-const promises = [];
-const dataOutputs = [];
+let promises = [];
+let dataOutputs = [];
 
-for (let page = 0; page <= pageCount; page++) {
+// Loop to add promises to the promises array
+
+for (let page = 1; page <= pageCount; page++) {
     promises.push(
-        storyblokApi.get(`cdn/stories?starts_with=blog&per_page=5&page=${page}`, {
-            version: "draft",
-        })
-    )
-    dataOutputs.push(`data${page}`)
+        storyblokApi.get(
+            `cdn/stories?starts_with=blog&per_page=5&page=${page}`,
+            {
+                version: "draft",
+            }
+        )
+    );
+    dataOutputs.push(`data${page}`);
 }
 
-const data  = await Promise.all(promises).then((results) => {
+// Resolve promises and return data to the page for rendering
+
+const data = await Promise.all(promises).then((results) => {
     const pagedArrays = results.map((array) => {
         return array.data.stories;
     });
-    const pagedStories = pagedArrays.map((page) => {
-        return Object.assign({}, page);
-    })
     return pagedArrays;
 });
 ---
@@ -45,6 +53,42 @@ const data  = await Promise.all(promises).then((results) => {
             title="Chris Landtiser | Blog"
             description={SITE_DESCRIPTION}
         />
+    </head>
+    <body>
+        <Header />
+        <main class="wrapper">
+            <section>
+                {
+                    data.map((page, index) => (
+                        <div class="post-page" id={"page" + index}>
+                            {page.map((post) => (
+                                <div class="blog-entry">
+                                    <h2 class="blogLink">
+                                        <a href={"/blog/" + post.slug}>
+                                            {post.content.title}
+                                        </a>
+                                    </h2>
+                                    <p>{post.content.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    ))
+                }
+            </section>
+            <div class="blogNav">
+                <div id="navOld" class="nav-previous alignleft">
+                    <a href="javascript:void(0)" onclick="changePage(1)">
+                        Older posts
+                    </a>
+                </div>
+                <div id="navNew" class="nav-next alignright nav-hide">
+                    <a href="javascript:void(0)" onclick="changePage(-1)">
+                        Newer posts
+                    </a>
+                </div>
+            </div>
+        </main>
+        <Footer />
         <style>
             ul {
                 list-style-type: none;
@@ -61,47 +105,17 @@ const data  = await Promise.all(promises).then((results) => {
             ul li a:visited {
                 color: #8e32dc;
             }
-        </style>
-    </head>
-    <body>
-        <Header />
-        <main class="wrapper">
-            <section>
-                    {data.map((page, index) => (
-                        
-                        <div class="post-page" id={"page"+index}>
-
-                            {page.map((post) => (
-                                <div class="blog-entry">
-                                    <h2 class="blogLink">
-                                        <a href={'/blog/' + post.slug}>
-                                            {post.content.title}
-                                        </a>
-                                    </h2>
-                                    <p>{post.content.description}</p>
-                                </div>
-                            ))}
-
-                        </div>
-
-                    ))}
-                    
-            </section>
-            <div class="blogNav">
-                
-				{(currentPage) < (pageCount) &&
-					<div class="nav-previous alignleft"><a href={"/blog/" + (currentPage + 1)}>Older posts</a></div>
-				}
-				{(currentPage) > 1 &&
-				<div class="nav-next alignright"><a href={currentPage - 1 > 1 ? "/blog/" + (currentPage - 1) : "/blog/"}>Newer posts</a></div>
-				}
-				
-            </div>
-        </main>
-        <Footer />
-        <style>
             p {
                 width: 100%;
+            }
+            .blogNav {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 20px;
+                width: 100%;
+                box-sizing: border-box;
+                margin: 20px 0;
             }
             .blog-entry {
                 width: 100%;
@@ -115,15 +129,58 @@ const data  = await Promise.all(promises).then((results) => {
             .post-page {
                 display: block;
             }
-
             .post-page.hidden {
                 display: none;
             }
+            .nav-hide {
+                display: none;
+            }
         </style>
-        <script>
-            var divs = document.querySelectorAll('.post-page');
+        <script define:vars={{ currentPage, pageCount }}>
+            // Hide pages of older posts in a way that fails gracefully
+            var divs = document.querySelectorAll(".post-page");
+
             for (var i = 1; i < divs.length; i++) {
-                divs[i].classList.add('hidden');
+                divs[i].classList.add("hidden");
+            }
+
+            // Button to change which page of posts is visible
+
+            let visiblePage = currentPage;
+
+            function changePage(direction) {
+
+                let navNew = document.getElementById('navNew');
+                let navOld = document.getElementById('navOld');
+                let pageFrom = document.getElementById('page'+(visiblePage-1));
+
+                visiblePage = visiblePage + direction;
+
+                let pageTo = document.getElementById('page'+(visiblePage-1));
+
+                // Show and hide directional nav buttons
+
+                if (visiblePage > 1 && navNew.classList.contains("nav-hide")) {
+                    navNew.classList.remove("nav-hide");
+                } else if (visiblePage === 1) {
+                    navNew.classList.add("nav-hide");
+                } else if (visiblePage === pageCount) {
+                    navOld.classList.add("nav-hide");
+                } else if (visiblePage === (pageCount - 1) && navOld.classList.contains("nav-hide")) {
+                    navOld.classList.remove("nav-hide");
+                }
+
+                document.body.scrollTop = document.documentElement.scrollTop = 0;
+
+                // Change visible page
+
+                console.log("FROM")
+                console.log(pageFrom)
+                console.log("TO")
+                console.log(pageTo)
+                pageFrom.classList.add('hidden')
+                pageTo.classList.remove('hidden')
+                
             }
         </script>
     </body>
