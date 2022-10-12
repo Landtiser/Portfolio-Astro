@@ -1,8 +1,7 @@
 ---
 import { useStoryblokApi } from "@storyblok/astro";
 import { storyblokEditable } from '@storyblok/astro'
-import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
-//import BlogPost from '../../storyblok/BlogPost'
+import PostContent from '../../storyblok/PostContent.astro'
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../../config";
 
@@ -50,9 +49,9 @@ const { blok } = Astro.props
   <body>
     <Header />
     <main>
-      <main {...storyblokEditable(story.content)}>
-        {story.content.body?.map(blok => { return <StoryblokComponent blok={blok} />})}
-      </main>
+      <BaseLayout {...storyblokEditable(blok)}>
+        <PostContent blok={story.content} />
+      </BaseLayout>
     </main>
     <Footer />
   </body>
