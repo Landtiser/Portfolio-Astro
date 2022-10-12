@@ -26,17 +26,6 @@ export async function getStaticPaths() {
   });
 }
 
-// Get the first (and only) url parameter relevant to these pages, slug, for the page query
-
-const { slug } = Astro.params;
-
-const storyblokApi = useStoryblokApi();
-
-const { data } = await storyblokApi.get(`cdn/stories/blog/${slug}`, {
-  version: "draft",
-});
-
-const story = data.story;
 ---
 
 <!DOCTYPE html>
