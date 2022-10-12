@@ -1,7 +1,8 @@
 ---
 import { useStoryblokApi } from "@storyblok/astro";
-import { storyblokEditable } from '@storyblok/astro'
-import PostContent from '../../storyblok/PostContent.astro'
+import { storyblokEditable } from '@storyblok/astro';
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
+//import PostContent from '../../storyblok/PostContent.astro'
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../../config";
 
@@ -38,7 +39,6 @@ const { data } = await storyblokApi.get(`cdn/stories/blog/${slug}`, {
 });
 
 const story = data.story;
-const { blok } = Astro.props
 ---
 
 <!DOCTYPE html>
@@ -48,11 +48,11 @@ const { blok } = Astro.props
   </head>
   <body>
     <Header />
-    <main>
-      <BaseLayout {...storyblokEditable(blok)}>
-        <PostContent blok={story.content} />
+      <BaseLayout>
+        <main {...storyblokEditable(data.story.content)}>
+          {data.story.content.body?.map(blok => {return <StoryblokComponent blok={blok} />})}
+        </main>
       </BaseLayout>
-    </main>
     <Footer />
   </body>
 </html>
