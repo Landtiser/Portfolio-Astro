@@ -47,7 +47,7 @@ const story = data.story;
   </head>
   <body>
     <Header />
-      <main>
+      <main class="wrapper">
         <BaseLayout {...storyblokEditable(data.story.content)}>
         
           {data.story.content.body?.map(blok => {return <StoryblokComponent blok={blok} />})}
