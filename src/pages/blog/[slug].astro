@@ -1,6 +1,6 @@
 ---
 import { useStoryblokApi } from "@storyblok/astro";
-import StoryblokComponent from "@storyblok/astro/StoryblokComponent.astro";
+//import StoryblokComponent from "@storyblok/astro/StoryblokComponent.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../../config";
 
@@ -48,7 +48,7 @@ const story = data.story;
     <Header />
     <main>
       <BaseLayout>
-        <StoryblokComponent blok={story.content} />
+        
       </BaseLayout>
     </main>
     <Footer />
