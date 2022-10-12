@@ -1,6 +1,6 @@
 ---
 import { useStoryblokApi } from "@storyblok/astro";
-
+import StoryblokComponent from "@storyblok/astro/StoryblokComponent.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../../config";
 
@@ -26,18 +26,31 @@ export async function getStaticPaths() {
   });
 }
 
+// Get the first (and only) url parameter relevant to these pages, slug, for the page query
+
+const { slug } = Astro.params;
+
+const storyblokApi = useStoryblokApi();
+
+const { data } = await storyblokApi.get(`cdn/stories/blog/${slug}`, {
+  version: "draft",
+});
+
+const story = data.story;
 ---
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   </head>
   <body>
-    
+    <Header />
     <main>
-      
+      <BaseLayout>
+        <StoryblokComponent blok={story.content} />
+      </BaseLayout>
     </main>
-    
+    <Footer />
   </body>
 </html>
