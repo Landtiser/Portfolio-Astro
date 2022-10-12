@@ -22,7 +22,8 @@ export default defineConfig({
 				teaser: 'storyblok/Teaser',
 				blogpost: 'storyblok/BlogPost',
 				embed: 'storyblok/Embed',
-				TextContent: 'storyblok/TextContent'
+				TextContent: 'storyblok/TextContent',
+				StoryblokComponent: '@storyblok/astro/StoryblokComponent.astro'
 			}
 		  }),
 	],
