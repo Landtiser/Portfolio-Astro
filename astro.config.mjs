@@ -6,7 +6,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://test-landtiser.netlify.app/',
+	site: 'https://landtiser.com',
 	integrations: [
 		mdx(),
 		sitemap(),
